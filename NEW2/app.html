@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Self as Systems</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { margin: 0; }
+    </style>
+
+</head>
+<body>
+
+<!-- Three.js library -->
+<script src="https://threejs.org/build/three.min.js"></script>
+<!-- GLTFLoader.js source -->
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+    const renderer = new THREE.WebGLRenderer();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+    const scene = new THREE.Scene();
+    let Mesh;
+    let light;
+
+    function init() {
+        scene.background = new THREE.Color('white');
+        camera.position.set(0, 10, 20);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+    }
+
+    function setLight() {
+    const color = 0xFFFFFF;
+    const intensity = 3;
+        setLight = new THREE.HemisphereLight(color, intensity); 
+        scene.add(setLight);
+    }
+    
+
+
+    function loadGLTF() {
+        let balloonLoader = new THREE.GLTFLoader();
+
+        balloonLoader.load('./model/systems4.gltf', (gltf) => {
+            Mesh = gltf.scene;
+            Mesh.scale.set(0.049,0.049,0.049);
+            scene.add(Mesh);
+            Mesh.position.x = .5;
+            Mesh.position.y = 9;
+            Mesh.position.z = 14;
+        });
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        if (Mesh && Mesh.rotation) {
+            Mesh.rotation.y -= 0.01;
+        }
+        renderer.render(scene, camera);
+    }
+
+    init();
+    setLight();
+    loadGLTF();
+    animate();
+</script>
+</body>
+</html>
